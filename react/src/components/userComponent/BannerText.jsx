@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styles from "../css/banner.module.css";
 export default function BannerText() {
   return (
@@ -12,9 +13,10 @@ export default function BannerText() {
         nature. Savourez des produits directement du champ à votre table
       </p>
       <div className={styles.bannerLinks}>
-        <a href="#produits">nos produits</a>
+        <Link to="/nos-produits">faites vos achats
+        <i className="bi-cart-plus ml-2"></i> </Link>
         <a href="#inscription">
-          inscription
+          se connecter
           <i className="bi-box-arrow-in-right ml-2"></i>
         </a>
       </div>

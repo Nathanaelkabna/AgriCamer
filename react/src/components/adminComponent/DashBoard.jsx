@@ -1,25 +1,10 @@
 import { Link, Navigate, Outlet } from "react-router-dom";
 import { useStateContext } from "../../contexts/ContextProvider";
-import { useEffect} from "react";
+import { useEffect } from "react";
 import axiosClient from "../../axios";
 
 export default function DashBoard() {
-  const { token, user, setUser, setToken , path, setPath} = useStateContext();
-
-  useEffect(() => {
-    axiosClient
-      .get(`/images/${user.image}`)
-      .then((data) => {
-        console.log(data.data.path);
-        setPath(data.data.path);
-      })
-      .catch((err) => {
-        const response = err.response;
-        if (response && response.status === 422) {
-          console.log(response.data.errors);
-        }
-      });
-  }, []);
+  const { token, user, setUser, setToken } = useStateContext();
 
   useEffect(() => {
     const storedString = localStorage.getItem("USER");
@@ -36,7 +21,6 @@ export default function DashBoard() {
       .then(() => {
         setUser({});
         setToken(null);
-        setPath(null);
       })
       .catch((err) => {
         const response = err.response;
@@ -76,7 +60,13 @@ export default function DashBoard() {
                 to="#"
                 data-bs-toggle="dropdown"
               >
-                <img src={path} alt="rien" className="rounded-circle" />
+                <img
+                  src={`http://127.0.0.1:8000/storage/${user.image}`}
+                  alt="rien"
+                  width="40"
+                  height="40"
+                  className="rounded-circle"
+                />
                 <span className="d-none d-md-block dropdown-toggle ps-2">
                   {user.name}
                 </span>
@@ -178,14 +168,20 @@ export default function DashBoard() {
       </aside>
 
       <main id="main" className="main">
-        <div className="pagetitle">
+        <div className="">
           <h1>Tableau De Board</h1>
+
           <nav>
             <ol className="breadcrumb">
               <li className="breadcrumb-item">
-                <a href="index.html">Accueil</a>
+                <Link to="/admin">tableau de board</Link>
               </li>
-              <li className="breadcrumb-item active">Tableau de board</li>
+              <li className="breadcrumb-item">
+                <Link to="/admin/products">produits</Link>
+              </li>
+              <li className="breadcrumb-item">
+                <Link to="categroie">categroie</Link>
+              </li>
             </ol>
           </nav>
         </div>

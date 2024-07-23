@@ -58,32 +58,23 @@
     justify-content: space-between;
     align-items: center;
 }
-.rightSideBar a{
-    margin: 0 2em;
-}
 .rightSideBar span{
     cursor: pointer;
 }
 .rightSideBar a:last-child{
     background-color: rgb(255, 255, 255);
-    padding: .8em;
+    margin: 0 2em;
+    padding: .7em;
     color: rgb(43, 173, 112);
     border-radius: 5em;
-    box-shadow: 0 5px 5px #121212;
+    box-shadow: 0 2px 5px #121212;
 }
 .rightSideBar a:last-child:hover{
     color: #000000;
     transition: ease-in-out .5s;
 }
 
-.profile ul a{
-    background-color: none!important;
-    padding: 1em!important;
-    margin: 0!important;
-    border-radius: 0!important;
-    box-shadow: none!important;
 
-}
 /* effets sur tablette */
 @media (max-width: 1266px) {
     .navItems a{

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function Produits() {
+export default function NosProduits() {
   return (
     <>
       <section id="produits" className="portfolio">

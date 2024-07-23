@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignUpRequest;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
@@ -18,6 +19,35 @@ class AuthController extends Controller
     public function signup(SignUpRequest $request)
     {
         $data = $request->validated();
+        /**
+         * @var UploadedFile|null $image
+         */
+
+        $image = $data['image'];
+        try {
+            $imageName = Str::random(32).".".$image->getClientOriginalExtension();
+
+            $user = User::create([
+                'name' => $data['name'],
+                'image' => $imageName,
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'address' =>  $data['address'],
+                'phone_number' => $data['phone_number']
+            ]);
+
+            Storage::disk('public')->put($imageName, file_get_contents($image));
+
+            $token = $user->createToken('main')->plainTextToken;
+    
+            return response(compact('user', 'token'));
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Invalid image'
+            ], 500);
+        }
+        
+        
         /** @var  \App\Models\User $user */
         
         // $image = $request->validated('image');
@@ -25,9 +55,7 @@ class AuthController extends Controller
         // $imageUrl = asset('storage/images/'.$image);
         // $data['image'] = $imageUrl;
 
-        /**
-         * @var UploadedFile|null $image
-         */
+        
 
         $image = $data['image'];
         if($image !== null && !$image->getError()){
@@ -36,17 +64,7 @@ class AuthController extends Controller
 
         $data['image'] = $imagePath;
             
-        $user = User::create([
-            'name' => $data['name'],
-            'image' => $data['image'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'address' =>  $data['address'],
-            'phone_number' => $data['phone_number']
-        ]);
-        $token = $user->createToken('main')->plainTextToken;
-
-        return response(compact('user', 'token'));
+        
     }
 
     public function login(LoginRequest $request)
@@ -54,9 +72,8 @@ class AuthController extends Controller
         $credentials = $request->validated();
         if(!Auth::attempt($credentials))
         {
-            return response([
-                'error' => 'the provided credentials are not correct',
-            ], 422);
+            $error = 'the provided credentials are not correct';
+            return response(compact('error'), 422);
         }
 
         /** @var  \App\Models\User $user */

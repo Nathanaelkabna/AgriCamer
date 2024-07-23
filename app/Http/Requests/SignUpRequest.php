@@ -25,7 +25,7 @@ class SignUpRequest extends FormRequest
         return [
             'name' => 'required|string',
             'email' => 'required|email|unique:users,email',
-            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:4000'],
+            'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:4000'],
             'password' => ['required', 'confirmed'],
             'address' => 'required|string',
             'phone_number' => 'required|integer|unique:users,phone_number',

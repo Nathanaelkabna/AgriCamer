@@ -26,4 +26,4 @@ Route::get('images/{image}', function($image){
 })->where('image', '.*');
 
 Route::resource('products', ProductController::class);
-Route::resource('user-products', UserProductController::class);
+Route::resource('userProducts', UserProductController::class);

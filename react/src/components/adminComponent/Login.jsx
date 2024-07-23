@@ -11,9 +11,6 @@ export default function Login() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-
-    setErrors({__html: ''})
-
     const payload = {
       email: emailRef.current.value,
       password: passwordRef.current.value,
@@ -26,12 +23,14 @@ export default function Login() {
         setToken(data.token);
       })
       .catch((error) => {
-        if(error.response){
-          const finalErrors = Object.values(error.response.data.errors).reduce((accum, next) => [...accum, ...next], [])
-          console.log(finalErrors)
-          setErrors({__html: finalErrors.join('<br>')})
+        if (error.response) {
+          const finalErrors = Object.values(error.response.data.errors).reduce(
+            (accum, next) => [...accum, ...next],
+            []
+          );
+          console.log(finalErrors);
+          setErrors({ __html: finalErrors.join("<br>") });
         }
-        console.error(error);
       });
 
   };

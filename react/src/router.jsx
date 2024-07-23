@@ -2,13 +2,14 @@ import { Navigate, createBrowserRouter } from "react-router-dom";
 import Contact from "./components/userComponent/Contact";
 import DefaultLayout from "./components/DefaultLayout";
 import Acceuil from "./components/userComponent/Accueil";
-import Produits from "./components/userComponent/Produits";
 import GuestLayout from "./components/adminComponent/GuestLayout";
 import Login from "./components/adminComponent/Login";
 import SignUp from "./components/adminComponent/SignUp";
 import DashBoard from "./components/adminComponent/DashBoard";
 import Admin from "./components/adminComponent/Admin";
 import Products from "./components/adminComponent/Produits";
+import CreateProduct from "./components/adminComponent/CreateProduct";
+import NosProduits from "./components/userComponent/NosProduits";
 
 const router = createBrowserRouter([
   {
@@ -18,17 +19,21 @@ const router = createBrowserRouter([
 
   {
     path: "/admin",
-    element: <DashBoard/>,
+    element: <DashBoard />,
     children: [
       {
         path: "",
-        element: <Admin />
+        element: <Admin />,
       },
       {
         path: "products",
-        element: <Products />
-      }
-    ]
+        element: <Products />,
+      },
+      {
+        path: "createProduct",
+        element: <CreateProduct />,
+      },
+    ],
   },
 
   {
@@ -55,8 +60,8 @@ const router = createBrowserRouter([
         element: <Acceuil />,
       },
       {
-        path: "/produits",
-        element: <Produits />,
+        path: "/nos-produits",
+        element: <NosProduits />,
       },
       {
         path: "/contact",
@@ -64,14 +69,5 @@ const router = createBrowserRouter([
       },
     ],
   },
-
-
-
-
-
-
-
-
-
 ]);
 export default router;

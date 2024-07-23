@@ -1,5 +1,5 @@
 .monAsideLight{
-    background-color: #121212;
+    background-color: #2B2A33;
     border-radius: .2em;
     margin-top: 1em;
     color: white;
@@ -9,7 +9,7 @@
     justify-content: space-evenly;
     align-items: center;
     padding: .3em;
-    background-color: #2bad70;
+    background-color: white;
 }
 .monAsideLight div:first-child div img{
     height: 40px;
@@ -22,7 +22,6 @@
     color: #2bad70;
     padding: .5em;
     border-radius: 5em;
-    border: 2px solid #2bad70;
     cursor: pointer;
 }
 
@@ -69,8 +68,8 @@
     color: #2bad70;
     padding: .5em;
     border-radius: 5em;
-    border: 2px solid #2bad70;
     cursor: pointer;
+    box-shadow: 0px 2px 5px #121212;
 }
 .aside-btn span{
     display: none;

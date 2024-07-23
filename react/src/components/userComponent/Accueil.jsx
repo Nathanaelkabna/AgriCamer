@@ -5,15 +5,13 @@ import BannerImage from "./BannerImage";
 import BannerText from "./BannerText";
 import Contact from "./Contact";
 import Mobile from "./Mobile";
-import Produits from "./Produits";
+import Produits from "./NosProduits";
 // import ProduitItem from "./ProduitItem.jsx";
 export default function Acceuil() {
   return (
     <>
       <div className={styles.welcomePage}>
-
-        <Banner image={<BannerImage />} text={ <BannerText />}/>
-        
+        <Banner image={<BannerImage />} text={<BannerText />} />
       </div>
 
       <Produits />
