@@ -38,7 +38,7 @@ class UserProductController extends Controller
     public function show(string $id)
     {
         try {
-            $product = Product::where('farmer_id', $id)->paginate(5);
+            $product = Product::where('farmer_id', $id)->orderBy('id', 'desc')->paginate(5);
             return response()->json([
                 'product' => $product
             ], 200);

@@ -4,7 +4,7 @@ import { useStateContext } from "../../contexts/ContextProvider";
 import axiosClient from "../../axios";
 
 export default function NosProduits() {
-  const { user } = useStateContext();
+  const { user, theme } = useStateContext();
   // eslint-disable-next-line no-unused-vars
   const [errors, setErrors] = useState({ __html: "" });
   const [itemsPerPage] = useState(6);
@@ -102,7 +102,7 @@ export default function NosProduits() {
                   <button
                     type="submit"
                     key={category.id}
-                    className="btn  btn-outline-dark mx-1"
+                    className= {theme==='light' ? "btn  btn-outline-dark mx-1" : "btn  btn-outline-light mx-1" } 
                     onClick={onFilterCategory}
                     value={category.id}
                   >
@@ -122,7 +122,7 @@ export default function NosProduits() {
                             key={prod.id}
                             className="col-lg-4 col-md-6 portfolio-item isotope-item filter-app"
                           >
-                            <div className="portfolio-content h-100 rounded-2">
+                            <div className="portfolio-content rounded-2" style={{height:"auto"}}>
                               <img
                                 src={`http://127.0.0.1:8000/storage/${prod.image}`}
                                 className="img-fluid h-100"

@@ -118,10 +118,10 @@ export default function Nav() {
                 <li>
                   <Link
                     className="dropdown-item d-flex align-items-center"
-                    to="/"
+                    to="/admin"
                   >
                     <i className="bi-box-arrow-in-up-right"></i>
-                    <span>Page admin</span>
+                    <span>Tableau de board</span>
                   </Link>
                 </li>
                 <li>

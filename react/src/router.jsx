@@ -10,6 +10,7 @@ import Admin from "./components/adminComponent/Admin";
 import Products from "./components/adminComponent/Produits";
 import CreateProduct from "./components/adminComponent/CreateProduct";
 import NosProduits from "./components/userComponent/NosProduits";
+import ProductDetails from "./components/adminComponent/ProductDetails";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
         path: "createProduct",
         element: <CreateProduct />,
       },
+      {
+        path: "products/:id",
+        element: <ProductDetails/>
+      }
     ],
   },
 

@@ -1,7 +1,8 @@
 import { useStateContext } from "../../contexts/ContextProvider";
 import axiosClient from "../../axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import ProductDetails from "./ProductDetails";
 
 export default function Products() {
   const { user } = useStateContext();
@@ -10,7 +11,12 @@ export default function Products() {
   const [itemsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
   const [products, setProducts] = useState([]);
+  const navigate = useNavigate()
+
+
+
   useEffect(() => {
+    
     const fetchProducts = (pageNumber) => {
       setErrors({ __html: "" });
       axiosClient
@@ -41,6 +47,13 @@ export default function Products() {
   const isEmpty = (array) => {
     return Array.isArray(array) && array.length === 0;
   };
+
+  const seeProduct = (e, id) => {
+    e.preventDefault()
+    console.log(id)
+    navigate(`/admin/products/${id}`);
+    
+  }
   return (
     <>
       <div className="row">
@@ -123,9 +136,9 @@ export default function Products() {
                             </span>
                           </td>
                           <td>
-                            <a href="#" className="text-info">
+                            <button  type="submit" className="text-info" onClick={(e) => seeProduct(e, prod.id)}>
                               modifier
-                            </a>
+                            </button>
                           </td>
                           <td>
                             <a href="#" className="text-danger">
