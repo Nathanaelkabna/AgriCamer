@@ -1,11 +1,11 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\UserProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\UserProductController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -19,11 +19,10 @@ Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
-Route::get('images/{image}', function($image){
-    $path =asset("storage/$image");
-    return response(compact('path'));
 
-})->where('image', '.*');
 
-Route::resource('products', ProductController::class);
+
 Route::resource('userProducts', UserProductController::class);
+
+Route::apiResource('products', ProductsController::class);
+Route::apiResource('categories', CategoriesController::class);

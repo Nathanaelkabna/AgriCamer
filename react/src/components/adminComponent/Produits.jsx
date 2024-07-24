@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 export default function Products() {
   const { user } = useStateContext();
+  // eslint-disable-next-line no-unused-vars
   const [errors, setErrors] = useState({ __html: "" });
   const [itemsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
@@ -17,7 +18,7 @@ export default function Products() {
           `/userProducts/${user.id}?page=${pageNumber}&itemsPerPage=${itemsPerPage}`
         )
         .then(({ data }) => {
-          setProducts(data.products);
+          setProducts(data.product);
         })
         .catch((error) => {
           if (error.response) {

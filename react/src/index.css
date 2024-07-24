@@ -9,7 +9,7 @@
     justify-content: space-evenly;
     align-items: center;
     padding: .3em;
-    background-color: white;
+    background-color: #2bad70;
 }
 .monAsideLight div:first-child div img{
     height: 40px;
@@ -18,7 +18,7 @@
 
 .aside-btn{
     text-decoration: none;
-    background-color: #fff;
+    background-color: transparent;
     color: #2bad70;
     padding: .5em;
     border-radius: 5em;
@@ -64,12 +64,11 @@
 }
 .aside-btn{
     text-decoration: none;
-    background-color: #fff;
+    background-color: transparent;
     color: #2bad70;
+    margin: 0 1em;
     padding: .5em;
-    border-radius: 5em;
     cursor: pointer;
-    box-shadow: 0px 2px 5px #121212;
 }
 .aside-btn span{
     display: none;

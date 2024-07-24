@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Exception;
 use Illuminate\Http\Request;
 
 class UserProductController extends Controller
@@ -36,10 +37,20 @@ class UserProductController extends Controller
      */
     public function show(string $id)
     {
-        $product = Product::where('farmer_id', $id)->paginate(5);
-        return response()->json([
-            'products' => $product
-        ], 200);
+        try {
+            $product = Product::where('farmer_id', $id)->paginate(5);
+            return response()->json([
+                'product' => $product
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json(
+                [
+                    'message' => 'products does not exist',
+                    'error' => $e->getMessage()
+                ]
+                );
+        }
+
     }
 
     /**

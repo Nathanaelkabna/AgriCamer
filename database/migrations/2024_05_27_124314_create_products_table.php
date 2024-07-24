@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Category;
 use App\Models\Farmer;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -20,7 +21,8 @@ return new class extends Migration
             $table->float('price_per_unit', 2);
             $table->string('unit')->default('XAF'); 
             $table->boolean('status')->default(0); 
-            $table->foreignIdFor(Farmer::class);
+            $table->foreignIdFor(Farmer::class)->nullable();
+            $table->foreignIdFor(Category::class)->nullable();
             $table->timestamps();
         });
     }

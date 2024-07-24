@@ -46,24 +46,7 @@ class AuthController extends Controller
                 'message' => 'Invalid image'
             ], 500);
         }
-        
-        
-        /** @var  \App\Models\User $user */
-        
-        // $image = $request->validated('image');
-        // $imagePath = Storage::disk('public')->put('images', $image);
-        // $imageUrl = asset('storage/images/'.$image);
-        // $data['image'] = $imageUrl;
-
-        
-
-        $image = $data['image'];
-        if($image !== null && !$image->getError()){
-            $imagePath = $image->store('users', 'public');
-        }
-
-        $data['image'] = $imagePath;
-            
+          
         
     }
 
@@ -94,38 +77,5 @@ class AuthController extends Controller
                 'success' => true
             ]
         );
-    }
-
-    private function saveImage($image){
-        if(preg_match('/^data:image\/(\w+);base64,/', $image, $type)){
-            $image = substr($image, strpos($image, ',') + 1);
-            $type = strtolower($type[1]);
-        
-            if(!in_array($type, ['png', 'jpg', 'jpeg', 'gif'])){
-                throw new \Exception('invalid image type');
-            }
-            $image = str_replace(' ', '+', $image);
-            $image = base64_decode($image);
-
-            if($image === false){
-                throw new \Exception('base64_decode failed');
-            }
-        }else{
-            throw new \Exception('did not match data url with image data');
-        }
-
-
-        $dir = 'images/';
-        $file = Str::random().'.'.$type; 
-        $absolutePath = public_path($dir);
-        $relativePath = $dir.$file;
-
-        if(!File::exists($absolutePath)){
-            File::makeDirectory($absolutePath, 0755, true);
-        }
-
-        file_put_contents($relativePath, $image);
-        
-        return $relativePath;
     }
 }
