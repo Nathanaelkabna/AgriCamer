@@ -31,7 +31,7 @@ export default function DashBoard() {
   };
 
   if (!token) {
-    return <Navigate to="/" />;
+    return <Navigate to="/admin/login" />;
   }
   return (
     <>

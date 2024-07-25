@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProductController;
 
 Route::get('/user', function (Request $request) {
@@ -26,3 +27,4 @@ Route::resource('userProducts', UserProductController::class);
 
 Route::apiResource('products', ProductsController::class);
 Route::apiResource('categories', CategoriesController::class);
+Route::apiResource('users', UserController::class);

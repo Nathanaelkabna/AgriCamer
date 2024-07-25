@@ -9,8 +9,9 @@ import DashBoard from "./components/adminComponent/DashBoard";
 import Admin from "./components/adminComponent/Admin";
 import Products from "./components/adminComponent/Produits";
 import CreateProduct from "./components/adminComponent/CreateProduct";
-import NosProduits from "./components/userComponent/NosProduits";
 import ProductDetails from "./components/adminComponent/ProductDetails";
+import ToutProduits from "./components/userComponent/ToutProduits";
+import UnProduit from "./components/userComponent/UnProduit";
 
 const router = createBrowserRouter([
   {
@@ -66,7 +67,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/nos-produits",
-        element: <NosProduits />,
+        element: <ToutProduits />
+      },
+      {
+        path: "/product/:id",
+        element: <UnProduit />
       },
       {
         path: "/contact",

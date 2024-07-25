@@ -1,16 +1,10 @@
 .landingPage {
-  height: 100%;
+  height: 700px;
   padding: 5em 0;
-  background-image: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.59),
-      rgba(0, 0, 0, 0.26)
-    ),
-    url("AgriCamerImg/12.jpg");
+  background: url("../../../public/images/11.png");
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: top;
-  background-attachment: scroll;
+  background-attachment: fixed;
   display: flex;
   flex-direction: column;
   align-items: center;

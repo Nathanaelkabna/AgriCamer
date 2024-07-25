@@ -14,8 +14,6 @@ return new class extends Migration
     {
         Schema::create('farmers', function (Blueprint $table) {
             $table->id();
-            $table->string('farm_name', 100);
-            $table->string('farm_address', 100);
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

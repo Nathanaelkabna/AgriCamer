@@ -143,8 +143,8 @@ export default function SignUp() {
               </div>
             </div>
             <div className="col-4 my-3">
-              <div className="rounded-1" style={{width:"200px", border:"1px solid black", borderRadius:"5px"}} >
-                {previewImage && <img src={previewImage} alt="selected image" style={{width:"200px", border:"1px solid black", borderRadius:"5px"}} /> }
+              <div className="" style={{maxWidth:"200px"}} >
+                {previewImage && <img src={previewImage} alt="selected image" style={{width:"200px"}} /> }
               </div>
               <input className="form-control" type="file"  name="image" ref={imageRef} onChange={onFileChange} />
             </div>

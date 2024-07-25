@@ -46,16 +46,16 @@ export default function Login() {
           <div className="form-group mb-5 mt-4">
             <input
               ref={emailRef}
-              className="form-control py-3"
+              className="form-control py-4"
               type="email"
               name="email"
-              placeholder="E-mail"
+              placeholder="adresse e-mail"
             />
           </div>
           <div className="form-group">
             <input
               ref={passwordRef}
-              className="form-control py-3"
+              className="form-control py-4"
               type="password"
               name="password"
               placeholder="Mot de passe"
@@ -84,7 +84,7 @@ export default function Login() {
             >
               se connecter
               <i>
-                <img src="AgriCamerImg/icons/34.svg" alt="" width="4%" />
+                <img src="images/icons/34.svg" alt="" width="4%" />
               </i>
             </button>
           </div>

@@ -1,14 +1,23 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useStateContext } from "../../contexts/ContextProvider";
 import axiosClient from "../../axios";
+export default function ToutProduits()
+{
+    return <>
 
-export default function NosProduits() {
+    <NosProduits />
+        
+    </>
+}
+
+/* eslint-disable no-unused-vars */
+
+
+function NosProduits() {
   const { user, theme } = useStateContext();
-  // eslint-disable-next-line no-unused-vars
   const [errors, setErrors] = useState({ __html: "" });
-  const [itemsPerPage] = useState(6);
+  const [itemsPerPage] = useState(25);
   const [currentPage, setCurrentPage] = useState(1);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -83,6 +92,10 @@ export default function NosProduits() {
           <p>nos produits</p>
         </div>
 
+        <div className="d-flex justify-content-center container my-3 form-group">
+            <input type="search" name="" className="form-control py-4" id=""  placeholder="rechercher vos produits...."/>
+        </div>
+
         <div className="container">
           <div
             className="isotope-layout"
@@ -91,7 +104,28 @@ export default function NosProduits() {
             data-sort="original-order"
           >
             <form action="" method="post" onSubmit={onHandleSubmit}>
-
+                
+              <ul
+                className="portfolio-filters isotope-filters"
+                data-aos="fade-up"
+                data-aos-delay="100"
+              >
+                <li>categorie : </li>
+                <li   className="filter-active">
+                  All
+                </li>
+                {categories.map((category) => (
+                  <button
+                    type="submit"
+                    key={category.id}
+                    className= {theme==='light' ? "btn  btn-outline-dark mx-1" : "btn  btn-outline-light mx-1" } 
+                    onClick={onFilterCategory}
+                    value={category.id}
+                  >
+                    {category.name}
+                  </button>
+                ))}
+              </ul>
               <div className="row gy-4 isotope-container">
                 {isEmpty(products) ? (
                   <div>aucun produit</div>
@@ -104,7 +138,7 @@ export default function NosProduits() {
                             key={prod.id}
                             className="col-lg-4 col-md-6 portfolio-item isotope-item filter-app"
                           >
-                            <div className="portfolio-content" style={{maxHeight:"200px"}}>
+                            <div className="portfolio-content rounded-2" style={{height:"auto"}}>
                               <img
                                 src={`http://127.0.0.1:8000/storage/${prod.image}`}
                                 className="img-fluid h-100"
@@ -112,22 +146,21 @@ export default function NosProduits() {
                               />
                               <div className="portfolio-info">
                                 <h4>{category.name}</h4>
-                                <p>{prod.description}</p>
                                 <Link
                                   to={`http://127.0.0.1:8000/storage/${prod.image}`}
-                                  title={prod.category_id}
+                                  
                                   data-gallery="portfolio-gallery-app"
                                   className="glightbox preview-link"
                                 >
                                   <i className="bi bi-zoom-in"></i>
                                 </Link>
-                                <a
-                                  href="portfolio-details.html"
-                                  title="More Details"
+                                <Link
+                                  to={`/product/${prod.id}`}
+                                title="voir produit"
                                   className="details-link"
                                 >
                                   <i className="bi bi-link-45deg"></i>
-                                </a>
+                                </Link>
                               </div>
                             </div>
                           </div>
@@ -137,12 +170,25 @@ export default function NosProduits() {
                       )
                     )}
                     <div className="d-flex justify-content-center">
-                      <Link to="/nos-produits" className="btn btn-lg btn-block btn-outline-warning">
-                        voir tout nos produits
-                      </Link>
+                      <button
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className="btn btn-primary mx-2"
+                      >
+                        previous
+                      </button>
+                      <button
+                        className="btn btn-primary mx-2"
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={
+                          currentPage ===
+                          Math.ceil(products.total / itemsPerPage)
+                        }
+                      >
+                        next
+                      </button>
                     </div>
                   </>
-                  
                 )}
               </div>
             </form>
