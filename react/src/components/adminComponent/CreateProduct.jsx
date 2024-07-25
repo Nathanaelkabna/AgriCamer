@@ -65,7 +65,8 @@ export default function CreateProduct() {
 
     axiosClient
       .post("/products", formData, { headers: "multipart/form-data" })
-      .then(() => {
+      .then((data) => {
+        console.log(data)
         setPreviewImage(null);
         setSelectedImage(null);
       })

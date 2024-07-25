@@ -2,7 +2,6 @@ import { useStateContext } from "../../contexts/ContextProvider";
 import axiosClient from "../../axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import ProductDetails from "./ProductDetails";
 
 export default function Products() {
   const { user } = useStateContext();
@@ -11,12 +10,12 @@ export default function Products() {
   const [itemsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
   const [products, setProducts] = useState([]);
-  const navigate = useNavigate()
-
-
-
+  const [realId, setRealId] = useState({});
+  const navigate = useNavigate();
   useEffect(() => {
-    
+    setTimeout(() => {
+      fetchProducts(currentPage);
+    }, 250);
     const fetchProducts = (pageNumber) => {
       setErrors({ __html: "" });
       axiosClient
@@ -37,7 +36,6 @@ export default function Products() {
           console.error(error);
         });
     };
-    fetchProducts(currentPage);
   }, [currentPage, user.id]);
 
   const handlePageChange = (newPage) => {
@@ -49,11 +47,39 @@ export default function Products() {
   };
 
   const seeProduct = (e, id) => {
-    e.preventDefault()
-    console.log(id)
+    e.preventDefault();
+    console.log(id);
     navigate(`/admin/products/${id}`);
+  };
+
+  const deleteItem = (e, id) => {
+    e.preventDefault()
+    setErrors({ __html: "" });
+    axiosClient
+      .delete(
+        `/products/${id}`
+      )
+      .then(({ data }) => {
+        navigate(0)
+        console.log(data);
+      })
+      .catch((error) => {
+        if (error.response) {
+          const finalErrors = Object.values(
+            error.response.data.errors
+          ).reduce((accum, next) => [...accum, ...next], []);
+          console.log(finalErrors);
+          setErrors({ __html: finalErrors.join("<br>") });
+        }
+        console.error(error);
+      });
     
-  }
+  };
+
+  const handleRealId = (id, name) => {
+    setRealId({id: id, name: name});
+    console.log(realId)
+  };
   return (
     <>
       <div className="row">
@@ -87,7 +113,11 @@ export default function Products() {
             </div>
 
             <div className="card-body">
-              <Link to="/admin/createProduct" className="btn btn-outline-success" type="button">
+              <Link
+                to="/admin/createProduct"
+                className="btn btn-outline-success"
+                type="button"
+              >
                 Ajouter un nouveau produit
               </Link>
 
@@ -111,6 +141,46 @@ export default function Products() {
                     <tbody>
                       {products.data.map((prod, index) => (
                         <tr key={prod.id}>
+                          {realId && (
+                            <div className="modal fade" id="basicModal">
+                              <div className="modal-dialog">
+                                <div className="modal-content">
+                                  <div className="modal-header">
+                                    <h5 className="modal-title">
+                                    confirmation de suppression
+                                    </h5>
+                                    <button
+                                      type="button"
+                                      className="btn-close"
+                                      data-bs-dismiss="modal"
+                                      aria-label="Close"
+                                    ></button>
+                                  </div>
+                                  <div className="modal-body">
+                                  le produit numero <i>{realId.id}</i> dont le nome est <b>{realId.name}</b> sera supprimer de votre base de donnees. voulez vous continuer cette action ?
+                                  </div>
+                                  <div className="modal-footer">
+                                    <button
+                                      type="button"
+                                      className="btn btn-secondary"
+                                      data-bs-dismiss="modal"
+                                    >
+                                      non
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className="btn btn-primary"
+                                      data-bs-dismiss="modal"
+                                      onClick={(e) => deleteItem(e, realId.id)}
+                                    >
+                                  oui
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
                           <th>
                             <a href="#">{index + 1}</a>
                           </th>
@@ -136,14 +206,26 @@ export default function Products() {
                             </span>
                           </td>
                           <td>
-                            <button  type="submit" className="text-info" onClick={(e) => seeProduct(e, prod.id)}>
+                            <button
+                              type="button"
+                              className="btn btn-outline-info"
+                              onClick={(e) => seeProduct(e, prod.id)}
+                            >
+                              <i className="bi-eye-fill"></i>
                               modifier
                             </button>
                           </td>
                           <td>
-                            <a href="#" className="text-danger">
+                            <button
+                              type="button"
+                              data-bs-toggle="modal"
+                              data-bs-target="#basicModal"
+                              className="btn btn-outline-danger"
+                              onClick={() => handleRealId(prod.id, prod.product_name)}
+                            >
+                              <i className="bi-trash"></i>
                               supprimer
-                            </a>
+                            </button>
                           </td>
                         </tr>
                       ))}

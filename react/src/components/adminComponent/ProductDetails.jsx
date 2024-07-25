@@ -1,23 +1,26 @@
-import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useStateContext } from "../../contexts/ContextProvider";
 import axiosClient from "../../axios";
 
-export default function ProductDetails() {
-  const { id } = useParams();
+import { useEffect, useRef, useState} from "react";
+import { useStateContext } from "../../contexts/ContextProvider";
+import { useNavigate, useParams } from "react-router";
+export default function CreateProduct() {
+  const {id} = useParams()
   const { user } = useStateContext();
-
+  const productNameRef = useRef();
+  const descriptionRef = useRef();
+  const pricePerUnitRef = useRef();
+  const categoryRef = useRef();
+  const imageRef = useRef();
   const [errors, setErrors] = useState({ __html: "" });
   // // eslint-disable-next-line no-unused-vars
   const [selectedImage, setSelectedImage] = useState(null);
-
+  const [previewImage, setPreviewImage] = useState(null);
   const [categories, setCategories] = useState([]);
-  const [aProduct, setAProduct] = useState([]);
-  const [productName, setProductName] = useState(aProduct.product_name);
-  const [description, setDescription] = useState(aProduct.description);
-  const [pricePerUnit, setPricePerUnit] = useState(aProduct.price_per_unit);
+  const [product, setProduct] = useState([]);
   const formData = new FormData();
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+
+
 
   useEffect(() => {
     const fetchData = () => {
@@ -39,25 +42,24 @@ export default function ProductDetails() {
         });
 
       axiosClient
-        .get(`/products/${id}`)
-        .then(({ data }) => {
-          setAProduct(data.product);
-        })
-        .catch((error) => {
-          if (error.response) {
-            const finalErrors = Object.values(
-              error.response.data.errors
-            ).reduce((accum, next) => [...accum, ...next], []);
-            console.log(finalErrors);
-            setErrors({ __html: finalErrors.join("<br>") });
-          }
-          console.error(error);
-        });
+       .get(`/products/${id}`)
+       .then(({data}) => {
+          setProduct(data.product);
+       })
+       .catch((error) => {
+        if (error.response) {
+          const finalErrors = Object.values(
+            error.response.data.errors
+          ).reduce((accum, next) => [...accum, ...next], []);
+          console.log(finalErrors);
+          setErrors({ __html: finalErrors.join("<br>") });
+        }
+        console.error(error);
+      });
     };
     fetchData();
   }, []);
 
-  const [previewImage, setPreviewImage] = useState();
   const onFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedImage(file);
@@ -68,19 +70,21 @@ export default function ProductDetails() {
     };
     reader.readAsDataURL(file);
   };
-
-  const onSubmit = () => {
+  const onSubmit = (e) => {
+    e.preventDefault()
     setErrors({ __html: "" });
-    formData.append("image", selectedImage);
+    formData.append("_method", "PUT");
+    formData.append("image", product.image  && !previewImage ? product.image : selectedImage);
     formData.append("product_name", productNameRef.current.value);
     formData.append("description", descriptionRef.current.value);
     formData.append("category_id", categoryRef.current.value);
     formData.append("farmer_id", user.id);
     formData.append("price_per_unit", pricePerUnitRef.current.value);
-
+    // console.log(formData)
     axiosClient
-      .put(`/products/${id}`, formData, { headers: "multipart/form-data" })
-      .then(() => {
+      .post(`products/${id}`, formData, { headers: "multipart/form-data" })
+      .then((data) => {
+        console.log(data)
         setPreviewImage(null);
         setSelectedImage(null);
       })
@@ -96,10 +100,8 @@ export default function ProductDetails() {
         console.error(error);
       });
 
-    navigate("/admin/products");
+      navigate("/admin/products")
   };
-
-  console.log(productName)
 
   return (
     <>
@@ -111,31 +113,22 @@ export default function ProductDetails() {
           ></div>
         )}
         <div className="row">
-          <h2 className="">modifier le produit</h2>
+          <h2 className="text-center">modifier un nouveau produit</h2>
           <div className="col-4 text-dark d-flex flex-column">
             <div>
               <label htmlFor="">selectionner une image</label>
-              {aProduct.image && !previewImage ? (
+
+              {product.image && !previewImage ?  (
                 <img
-                src={`http://127.0.0.1:8000/storage/${aProduct.image}`}
+                src={`http://127.0.0.1:8000/storage/${product.image}`}
                   alt="selected image"
-                  style={{
-                    maxWidth: "100%",
-                    maxHeight: "100%",
-                    flex: "1",
-                    borderRadius: "5px",
-                  }}
+                  style={{ maxWidth: "100%", maxHeight:"100%", flex:"1", borderRadius:"5px" }}
                 />
-              ) : (
+              ): (
                 <img
                   src={previewImage}
                   alt="selected image"
-                  style={{
-                    maxWidth: "100%",
-                    maxHeight: "100%",
-                    flex: "1",
-                    borderRadius: "5px",
-                  }}
+                  style={{ maxWidth: "100%", maxHeight:"100%", flex:"1", borderRadius:"5px" }}
                 />
               )}
             </div>
@@ -143,6 +136,7 @@ export default function ProductDetails() {
               className="form-control"
               type="file"
               name="image"
+              ref={imageRef}
               onChange={onFileChange}
             />
           </div>
@@ -153,9 +147,9 @@ export default function ProductDetails() {
                 type="text"
                 className="form-control"
                 name="product_name"
+                ref={productNameRef}
                 id="product_name"
-                value = {aProduct.product_name}
-                onChange={(e) => setProductName(e.target.value)}
+                defaultValue={product.product_name}
               />
             </div>
             <div className="row">
@@ -165,7 +159,9 @@ export default function ProductDetails() {
                   type="number"
                   className="form-control"
                   name="price_per_unit"
+                  ref={pricePerUnitRef}
                   id="price_per_unit"
+                  defaultValue={product.price_per_unit}
                 />
               </div>
               <div className="col-6 form-group">
@@ -173,13 +169,15 @@ export default function ProductDetails() {
                 <select
                   name="category_id"
                   className="form-select"
+                  ref={categoryRef}
                   id="category"
                 >
-                  {categories.map((cat) => (
-                    <option key={cat.id} value={cat.id}>
-                      {cat.name}
-                    </option>
-                  ))}
+                  {
+                    categories.map((cat) => (
+                      <option key={cat.id} value={cat.id} selected={product.category_id === cat.id ? "selected" : ""}>{cat.name}</option>
+                    ))
+                  }
+                  
                 </select>
               </div>
             </div>
@@ -190,7 +188,9 @@ export default function ProductDetails() {
                 type="text"
                 className="form-control"
                 name="description"
+                ref={descriptionRef}
                 id="description"
+                defaultValue={product.description}
                 cols="10"
                 rows="5"
               ></textarea>
@@ -200,12 +200,13 @@ export default function ProductDetails() {
                 type="submit"
                 className="btn btn-block btn-lg btn-success w-100 text-black"
               >
-                ajouter
+                modifier
               </button>
             </div>
           </div>
         </div>
       </form>
     </>
+
   );
 }

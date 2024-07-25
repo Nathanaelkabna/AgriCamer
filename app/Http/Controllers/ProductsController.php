@@ -6,6 +6,7 @@ use App\Models\Product;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductsRequest;
+use App\Http\Requests\ProductUpdatRequest;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 
@@ -96,18 +97,21 @@ class ProductsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProductsRequest $request, string $id)
+    public function update(ProductUpdatRequest $request, string $id)
     {
         $data = $request->validated();
         try {
             $product = Product::find($id);
-        
+           
             if($data['image']){
                 $storage = Storage::disk('public');
-    
+
                 if($storage->exists($product->image)){
                     $storage->delete($product->image);
                 }
+                
+                
+                
                 $imageName = Str::random(32).".".$data['image']->getClientOriginalExtension();
     
                 $storage->put($imageName, file_get_contents($data['image']));

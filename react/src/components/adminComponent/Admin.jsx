@@ -1,6 +1,43 @@
+/* eslint-disable no-unused-vars */
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axiosClient from "../../axios";
+import { useStateContext } from "../../contexts/ContextProvider";
 
 export default function Admin() {
+  const { user } = useStateContext();
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [errors, setErrors] = useState({ __html: "" });
+  useEffect(() => {
+    setTimeout(() => {
+      fetchProducts();
+    }, 250);
+    const fetchProducts = () => {
+      setErrors({ __html: "" });
+      axiosClient
+        .get(`/userProducts/${user.id}`)
+        .then(({ data }) => {
+          setProducts(data.product.data);
+        })
+        .catch((error) => {
+          if (error.response) {
+            const finalErrors = Object.values(
+              error.response.data.errors
+            ).reduce((accum, next) => [...accum, ...next], []);
+            console.log(finalErrors);
+            setErrors({ __html: finalErrors.join("<br>") });
+          }
+          console.error(error);
+        });
+
+        axiosClient
+        .get(`/categories`)
+        .then(({ data }) => {
+          setCategories(data.category.data);
+        })
+    };
+  }, [user.id]);
   return (
     <>
       <div className="row">
@@ -15,7 +52,7 @@ export default function Admin() {
                     <i className="bi bi-cart"></i>
                   </div>
                   <div className="">
-                    <h6>1244</h6>
+                    <h6>{products.length}</h6>
                     <Link to="/admin/products" className="small">
                       aller vers vos produits
                     </Link>
@@ -35,9 +72,9 @@ export default function Admin() {
                     <i className="bi bi-cart"></i>
                   </div>
                   <div className="">
-                    <h6>1244</h6>
+                    <h6>{categories.length}</h6>
                     <Link to="#" className="small">
-                      aller vers vos produits
+                      aller vers nos categories
                     </Link>
                   </div>
                 </div>
@@ -55,9 +92,9 @@ export default function Admin() {
                     <i className="bi bi-cart"></i>
                   </div>
                   <div className="">
-                    <h6>1244</h6>
+                    <h6>{products.filter(product => product.status != 0).length}</h6>
                     <a href="#" className="small">
-                      aller vers vos produits
+                      historique des ventes
                     </a>
                   </div>
                 </div>
@@ -165,7 +202,6 @@ export default function Admin() {
                 </div> */}
         </div>
       </div>
-      {/* {errors && <p> error fetching products: {errors.message}</p>} */}
     </>
   );
 }

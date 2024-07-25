@@ -31,7 +31,7 @@ export default function DashBoard() {
   };
 
   if (!token) {
-    return <Navigate to="/admin/login" />;
+    return <Navigate to="/" />;
   }
   return (
     <>
@@ -156,12 +156,6 @@ export default function DashBoard() {
                   <span>Produits</span>
                 </Link>
               </li>
-              <li>
-                <a href="components-alerts.html">
-                  <i className="bi bi-journal-text"></i>
-                  <span>Categories</span>
-                </a>
-              </li>
             </ul>
           </li>
         </ul>
@@ -178,9 +172,6 @@ export default function DashBoard() {
               </li>
               <li className="breadcrumb-item">
                 <Link to="/admin/products">produits</Link>
-              </li>
-              <li className="breadcrumb-item">
-                <Link to="categroie">categroie</Link>
               </li>
             </ol>
           </nav>
