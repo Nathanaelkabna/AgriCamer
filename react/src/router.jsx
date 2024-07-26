@@ -12,6 +12,7 @@ import CreateProduct from "./components/adminComponent/CreateProduct";
 import ProductDetails from "./components/adminComponent/ProductDetails";
 import ToutProduits from "./components/userComponent/ToutProduits";
 import UnProduit from "./components/userComponent/UnProduit";
+import Basket from "./components/userComponent/Basket";
 
 const router = createBrowserRouter([
   {
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
       {
         path: "/product/:id",
         element: <UnProduit />
+      },
+      {
+        path: "/basket",
+        element: <Basket />
       },
       {
         path: "/contact",

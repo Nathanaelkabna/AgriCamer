@@ -33,6 +33,9 @@ export default function DashBoard() {
   if (!token) {
     return <Navigate to="/admin/login" />;
   }
+  if (token && user.role != "agriculteur"){
+    return <Navigate to="/" />
+  }
   return (
     <>
       <header

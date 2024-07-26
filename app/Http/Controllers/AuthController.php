@@ -19,6 +19,11 @@ class AuthController extends Controller
     public function signup(SignUpRequest $request)
     {
         $data = $request->validated();
+        if($data['role'] == "true"){
+            $data['role'] = "agriculteur";
+        }else{
+            $data['role'] = "client";
+        }
         /**
          * @var UploadedFile|null $image
          */
@@ -31,6 +36,7 @@ class AuthController extends Controller
                 'name' => $data['name'],
                 'image' => $imageName,
                 'email' => $data['email'],
+                'role' => $data['role'],
                 'password' => Hash::make($data['password']),
                 'address' =>  $data['address'],
                 'phone_number' => $data['phone_number']

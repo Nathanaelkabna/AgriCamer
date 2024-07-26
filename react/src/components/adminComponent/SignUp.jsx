@@ -12,6 +12,7 @@ export default function SignUp() {
   const addressRef = useRef();
   const phoneNumberRef = useRef();
   const imageRef = useRef();
+  const [role, setRole] = useState(false)
   const { setUser, setToken } = useStateContext();
   const [errors, setErrors] = useState({ __html: "" });
   // eslint-disable-next-line no-unused-vars
@@ -31,11 +32,15 @@ export default function SignUp() {
     reader.readAsDataURL(file)
   }
 
+  const handleChange = (e) => {
+    console.log(e.target.checked)
+    setRole(e.target.checked)
+  }
+
 
 
   const onSubmit = (e) => {
     e.preventDefault();
-
     setErrors({ __html: "" });
     formData.append('image', selectedImage)
     formData.append('name', nameRef.current.value)
@@ -44,6 +49,9 @@ export default function SignUp() {
     formData.append('password_confirmation', passwordConfirmationRef.current.value)
     formData.append('address', addressRef.current.value)
     formData.append('phone_number', phoneNumberRef.current.value)
+    formData.append('role', role)
+
+    console.log(formData)
 
     axiosClient
       .post("/signup",formData, { headers: 'multipart/form-data' })
@@ -143,10 +151,19 @@ export default function SignUp() {
               </div>
             </div>
             <div className="col-4 my-3">
-              <div className="" style={{maxWidth:"200px"}} >
+              <div className="">
                 {previewImage && <img src={previewImage} alt="selected image" style={{width:"200px"}} /> }
               </div>
               <input className="form-control" type="file"  name="image" ref={imageRef} onChange={onFileChange} />
+              <div className="form-group my-3">
+                <label htmlFor="" className="form-check-label">s&apos;inscrire en tant que agricuteur</label>
+                
+                <div className="d-flex form-switch">
+                <input type="checkbox" name="role" id="" className="form-check-input" onChange={(e) => handleChange(e)} />
+                </div>
+               
+                
+              </div>
             </div>
           </div>
 

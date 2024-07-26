@@ -69,7 +69,7 @@ export default function Nav() {
           </span>
           {token ? (
             <Link
-              to="/"
+              to="/basket"
               style={{
                 padding: "0em",
                 backgroundColor: "transparent",
@@ -80,7 +80,7 @@ export default function Nav() {
               <img src="images/icons/35.svg" alt="ajouter au panier" />
             </Link>
           ) : (
-            <Link to="/">
+            <Link to="/basket" >
               <img src="images/icons/35.svg" alt="ajouter au panier" />
             </Link>
           )}

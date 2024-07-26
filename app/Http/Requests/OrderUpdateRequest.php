@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 
-class SignUpRequest extends FormRequest
+class OrderUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,13 +22,9 @@ class SignUpRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users,email',
-            'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:4000'],
-            'password' => ['required', 'confirmed'],
-            'address' => 'required|string',
-            'role' => 'required',
-            'phone_number' => 'required|integer|unique:users,phone_number',
+            'price_per_unit' => 'required|numeric',
+            'user_id' => 'required|integer',
+            'product_id' => 'required|integer',
         ];
     }
 }
